@@ -1,0 +1,39 @@
+{
+  "modmenu.nameTranslations.blockname": "BlockName",
+
+  "category.blockname": "BlockName",
+  "key.blockname.toggle_scan": "Activer/désactiver le Scan",
+  "key.blockname.toggle_debug": "Activer/désactiver le Debug",
+
+  "blockname.scan.enabled": "Mode Scan",
+  "blockname.scan.show_tool": "Afficher l'outil requis",
+  "blockname.scan.show_silk_touch": "Afficher Silk Touch",
+  "blockname.scan.show_fortune": "Afficher Fortune",
+  "blockname.scan.show_hardness": "Afficher la dureté",
+  "blockname.scan.multiplayer_disabled": "Désactivé en multijoueur",
+
+  "blockname.ui.theme": "Thème",
+  "blockname.ui.theme.dark": "Sombre",
+  "blockname.ui.theme.light": "Clair",
+  "blockname.ui.mode": "Mode d'affichage",
+  "blockname.ui.mode.large": "Complet",
+  "blockname.ui.mode.compact": "Compact",
+  "blockname.ui.animations": "Animations",
+  "blockname.ui.scale": "Échelle",
+
+  "blockname.debug.enabled": "Mode Debug",
+  "blockname.debug.show_hitbox": "Afficher la hitbox",
+  "blockname.debug.show_tags": "Afficher les tags",
+  "blockname.debug.show_loot_table": "Afficher la loot table",
+  "blockname.debug.show_properties": "Afficher les propriétés du bloc",
+
+  "blockname.hud.hardness": "Dureté",
+  "blockname.hud.resistance": "Résistance aux explosions",
+  "blockname.hud.silk_touch": "Silk Touch requis",
+  "blockname.hud.fortune": "Fortune applicable",
+  "blockname.hud.tool.hand": "Main",
+  "blockname.hud.tool.pickaxe": "Pioche",
+  "blockname.hud.tool.axe": "Hache",
+  "blockname.hud.tool.shovel": "Pelle",
+  "blockname.hud.tool.hoe": "Houe"
+}

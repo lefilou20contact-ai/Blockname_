@@ -1,0 +1,50 @@
+{
+  "_comment": "Fichier de configuration du mod BlockName - Ne pas modifier manuellement sauf si vous savez ce que vous faites.",
+  "version": 1,
+
+  "scan": {
+    "enabled": true,
+    "keybind": "key.keyboard.f9",
+    "show_tool_required": true,
+    "show_silk_touch": true,
+    "show_fortune": true,
+    "show_hardness": true,
+    "show_blast_resistance": true,
+    "show_tags": false,
+    "show_loot_table": false,
+    "multiplayer_disabled": true
+  },
+
+  "ui": {
+    "theme": "dark",
+    "mode": "large",
+    "glass_opacity": 0.75,
+    "rounded_corners": true,
+    "animations": true,
+    "animation_speed": 1.0,
+    "position_x": 10,
+    "position_y": 10,
+    "scale": 1.0
+  },
+
+  "debug": {
+    "enabled": false,
+    "show_hitbox": false,
+    "show_full_tags": true,
+    "show_loot_table": true,
+    "show_hardness": true,
+    "show_blast_resistance": true,
+    "show_block_properties": true,
+    "show_block_id": true
+  },
+
+  "performance": {
+    "cache_enabled": true,
+    "cache_size": 256,
+    "tick_interval": 2
+  },
+
+  "i18n": {
+    "language": "auto"
+  }
+}

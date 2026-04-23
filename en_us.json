@@ -1,0 +1,39 @@
+{
+  "modmenu.nameTranslations.blockname": "BlockName",
+
+  "category.blockname": "BlockName",
+  "key.blockname.toggle_scan": "Toggle Scan Mode",
+  "key.blockname.toggle_debug": "Toggle Debug Mode",
+
+  "blockname.scan.enabled": "Scan Mode",
+  "blockname.scan.show_tool": "Show Required Tool",
+  "blockname.scan.show_silk_touch": "Show Silk Touch",
+  "blockname.scan.show_fortune": "Show Fortune",
+  "blockname.scan.show_hardness": "Show Hardness",
+  "blockname.scan.multiplayer_disabled": "Disable in Multiplayer",
+
+  "blockname.ui.theme": "Theme",
+  "blockname.ui.theme.dark": "Dark",
+  "blockname.ui.theme.light": "Light",
+  "blockname.ui.mode": "Display Mode",
+  "blockname.ui.mode.large": "Full",
+  "blockname.ui.mode.compact": "Compact",
+  "blockname.ui.animations": "Animations",
+  "blockname.ui.scale": "Scale",
+
+  "blockname.debug.enabled": "Debug Mode",
+  "blockname.debug.show_hitbox": "Show Hitbox",
+  "blockname.debug.show_tags": "Show Tags",
+  "blockname.debug.show_loot_table": "Show Loot Table",
+  "blockname.debug.show_properties": "Show Block Properties",
+
+  "blockname.hud.hardness": "Hardness",
+  "blockname.hud.resistance": "Blast Resistance",
+  "blockname.hud.silk_touch": "Silk Touch required",
+  "blockname.hud.fortune": "Fortune applicable",
+  "blockname.hud.tool.hand": "Hand",
+  "blockname.hud.tool.pickaxe": "Pickaxe",
+  "blockname.hud.tool.axe": "Axe",
+  "blockname.hud.tool.shovel": "Shovel",
+  "blockname.hud.tool.hoe": "Hoe"
+}
