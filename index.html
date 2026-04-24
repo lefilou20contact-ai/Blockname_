@@ -181,6 +181,7 @@
         <div class="btn-row">
             <a id="downloadBtn" class="btn" href="https://modrinth.com/mod/blockname" target="_blank"></a>
             <button id="licenseBtn" class="btn secondary" onclick="showLicense()"></button>
+            <button id="translateBtn" class="btn secondary" onclick="translateLicense()"></button>
         </div>
 
         <div id="extra"></div>
@@ -228,6 +229,8 @@ const translations = {
         desc2: "Interface propre, animations, configuration JSON et intégration ModMenu.",
         download: "Télécharger sur Modrinth",
         license: "Voir la licence",
+        translateLicense: "Traduire la licence",
+        translatedTitle: "Licence (traduite)",
         sidebarName: "BlockName",
         sidebarDesc: "Infos de blocs, outils, loot…"
     },
@@ -238,6 +241,8 @@ const translations = {
         desc2: "Clean UI, animations, JSON config and ModMenu integration.",
         download: "Download on Modrinth",
         license: "View License",
+        translateLicense: "Translate license",
+        translatedTitle: "Translated License",
         sidebarName: "BlockName",
         sidebarDesc: "Block info, tools, loot…"
     },
@@ -248,6 +253,8 @@ const translations = {
         desc2: "Interfaz limpia, animaciones, configuración JSON e integración con ModMenu.",
         download: "Descargar en Modrinth",
         license: "Ver licencia",
+        translateLicense: "Traducir licencia",
+        translatedTitle: "Licencia traducida",
         sidebarName: "BlockName",
         sidebarDesc: "Información de bloques, herramientas, loot…"
     },
@@ -258,6 +265,8 @@ const translations = {
         desc2: "Saubere UI, Animationen, JSON‑Konfiguration und ModMenu‑Integration.",
         download: "Auf Modrinth herunterladen",
         license: "Lizenz anzeigen",
+        translateLicense: "Lizenz übersetzen",
+        translatedTitle: "Übersetzte Lizenz",
         sidebarName: "BlockName",
         sidebarDesc: "Blockinfos, Werkzeuge, Loot…"
     }
@@ -311,6 +320,35 @@ function showLicense() {
 function resetView() {
     document.getElementById("extra").innerHTML = "";
 }
+
+ function translateLicense() {
+    const t = translations[currentLang === "auto" ? detectLang() : currentLang];
+
+    // Traduction automatique simple (pas parfaite mais suffisante)
+    let translated = LICENSE_TEXT
+        .replace("MIT License", {
+            fr: "Licence MIT",
+            es: "Licencia MIT",
+            de: "MIT-Lizenz",
+            en: "MIT License"
+        }[currentLang === "auto" ? detectLang() : currentLang])
+        .replace("Permission is hereby granted, free of charge, to any person obtaining a copy",
+            {
+                fr: "La permission est accordée gratuitement à toute personne obtenant une copie",
+                es: "Se concede permiso de forma gratuita a cualquier persona que obtenga una copia",
+                de: "Die Erlaubnis wird hiermit kostenlos jeder Person erteilt, die eine Kopie erhält",
+                en: "Permission is hereby granted, free of charge, to any person obtaining a copy"
+            }[currentLang === "auto" ? detectLang() : currentLang]
+        );
+
+    document.getElementById("extra").innerHTML = `
+        <h2>${t.translatedTitle}</h2>
+        <pre>${translated}</pre>
+    `;
+
+    document.getElementById("card").style.animation = "fadeIn 0.4s ease";
+}
+
 </script>
 
 </body>
