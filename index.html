@@ -350,15 +350,87 @@ function translateLicense() {
     const lang = currentLang === "auto" ? detectLang() : currentLang;
     const t = translations[lang];
 
-    const translatedVersions = {
-        fr: `Licence MIT (traduite)
-${LICENSE_TEXT}`,
-        es: `Licencia MIT (traducida)
-${LICENSE_TEXT}`,
-        de: `MIT-Lizenz (übersetzt)
-${LICENSE_TEXT}`,
-        en: LICENSE_TEXT
-    };
+   const translatedVersions = {
+    fr: `Licence MIT
+
+Copyright (c) 2026 LeFilou2.0
+
+La permission est accordée, à titre gratuit, à toute personne obtenant une copie
+de ce logiciel et de sa documentation associée (le « Logiciel »), de traiter
+le Logiciel sans restriction, y compris, sans limitation, les droits
+d'utiliser, de copier, de modifier, de fusionner, de publier, de distribuer, de concéder en sous-licence et/ou de vendre
+des copies du Logiciel, et de permettre aux personnes auxquelles le Logiciel est
+fourni de faire de même, sous réserve des conditions suivantes :
+
+La présente mention de droit d'auteur et la présente mention d'autorisation doivent être incluses dans toutes
+copies ou parties substantielles du Logiciel.
+
+LE LOGICIEL EST FOURNI « TEL QUEL », SANS GARANTIE D'AUCUNE SORTE, EXPRESSE OU
+IMPLICITE, Y COMPRIS, MAIS SANS S'Y LIMITER, LES GARANTIES DE QUALITÉ MARCHANDE,
+D'ADÉQUATION À UN USAGE PARTICULIER ET D'ABSENCE DE CONTREFAÇON. EN AUCUN CAS, LES
+AUTEURS OU LES DÉTENTEURS DE DROITS D'AUTEUR NE SERONT RESPONSABLES DE TOUTE RÉCLAMATION,
+DE TOUT DOMMAGE OU DE TOUTE AUTRE RESPONSABILITÉ, QUE CE SOIT DANS LE CADRE D'UNE ACTION CONTRACTUELLE,
+DÉLICTUELLE OU AUTRE, DÉCOULANT DE L'UTILISATION OU DE TOUTE AUTRE TRANSACTION LIÉE AU LOGICIEL.`,
+
+    es: `Licencia MIT
+
+Copyright (c) 2026 LeFilou2.0
+
+Se otorga permiso, de forma gratuita, a cualquier persona que obtenga una copia
+de este software y los archivos de documentación asociados (el "Software"), para utilizar
+el Software sin restricciones, incluyendo, entre otros, los derechos
+de uso, copia, modificación, fusión, publicación, distribución, sublicencia y/o venta
+de copias del Software, y para permitir que las personas a quienes se les proporcione el Software
+hagan lo mismo, sujeto a las siguientes condiciones:
+
+El aviso de copyright anterior y este aviso de permiso deberán incluirse en todas las
+copias o partes sustanciales del Software.
+
+EL SOFTWARE SE PROPORCIONA «TAL CUAL», SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O
+IMPLICADA, INCLUYENDO, ENTRE OTRAS, LAS GARANTÍAS DE COMERCIABILIDAD,
+IDONEIDAD PARA UN FIN PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES O TITULARES DE LOS DERECHOS DE AUTOR SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN,
+DAÑO U OTRA RESPONSABILIDAD, YA SEA POR INCUMPLIMIENTO DE CONTRATO, AGRAVIO O DE OTRO TIPO,
+QUE SURJA DE O EN RELACIÓN CON EL SOFTWARE O SU USO.`,
+
+    de: `MIT-Lizenz
+
+Copyright (c) 2026 LeFilou2.0
+
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die „Software“) erhält,
+unentgeltlich die Erlaubnis erteilt, die Software ohne Einschränkung zu nutzen, einschließlich, aber nicht beschränkt auf das Recht,
+Kopien der Software zu verwenden, zu kopieren, zu ändern, zusammenzuführen, zu veröffentlichen, zu verbreiten, unterzulizenzieren
+und/oder zu verkaufen, und Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen zu gestatten:
+
+Der obige Urheberrechtshinweis und dieser Lizenzhinweis müssen in allen Kopien oder wesentlichen Teilen der Software enthalten sein.
+
+DIE SOFTWARE WIRD OHNE MÄNGELGEWÄHR UND OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG BEREITGESTELLT,
+EINSCHLIESSLICH, ABER NICHT BESCHRÄNKT AUF DIE GEWÄHRLEISTUNG DER MARKTGÄNGIGKEIT, DER EIGNUNG FÜR EINEN BESTIMMTEN ZWECK
+UND DER NICHTVERLETZUNG VON RECHTEN DRITTER. Die Autoren und Urheberrechtsinhaber haften in keinem Fall für Ansprüche, Schäden
+oder sonstige Haftung, sei es aus Vertrag, unerlaubter Handlung oder anderweitig, die aus der Software oder deren Nutzung oder
+sonstigen Umgang mit der Software entstehen.`,
+
+    en: `MIT License
+
+Copyright (c) 2026 LeFilou2.0
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`
+};
+
 
     document.getElementById("extra").innerHTML =
         `<h2>${t.translatedTitle}</h2><pre>${translatedVersions[lang]}</pre>`;
