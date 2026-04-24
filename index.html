@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mes Mods Minecraft</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #1e1e1e;
+        color: white;
+        display: flex;
+        height: 100vh;
+    }
+
+    /* Sidebar droite */
+    #sidebar {
+        width: 260px;
+        background: #2b2b2b;
+        border-left: 2px solid #444;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    #sidebar h2 {
+        margin-top: 0;
+        text-align: center;
+    }
+
+    .mod-item {
+        padding: 10px;
+        margin: 8px 0;
+        background: #3a3a3a;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .mod-item:hover {
+        background: #505050;
+    }
+
+    /* Zone centrale */
+    #content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 10px 5px 0 0;
+        background: #4caf50;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background: #45a049;
+    }
+
+    pre {
+        background: #111;
+        padding: 15px;
+        border-radius: 8px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+</style>
+</head>
+<body>
+
+<!-- Contenu principal -->
+<div id="content">
+    <h1>Bienvenue</h1>
+    <p>Sélectionne un mod dans la liste à droite.</p>
+</div>
+
+<!-- Sidebar droite -->
+<div id="sidebar">
+    <h2>Mes Mods</h2>
+
+    <div class="mod-item" onclick="showMod('blockname')">
+        BlockName
+    </div>
+
+    <!-- Tu peux ajouter d'autres mods ici -->
+</div>
+
+<script>
+// LICENCE MIT (celle que tu m'as fournie)
+const LICENSE_TEXT = `
+MIT License
+
+Copyright (c) 2026 LeFilou2.0
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+`;
+
+function showMod(mod) {
+    if (mod === "blockname") {
+        document.getElementById("content").innerHTML = `
+            <h1>BlockName</h1>
+            <p>Mod d'affichage avancé des informations de blocs.</p>
+
+            <a class="btn" href="https://modrinth.com/mod/blockname" target="_blank">
+                Télécharger sur Modrinth
+            </a>
+
+            <a class="btn" href="#" onclick="showLicense()">
+                Voir la licence
+            </a>
+        `;
+    }
+}
+
+function showLicense() {
+    document.getElementById("content").innerHTML = `
+        <h1>Licence</h1>
+        <pre>${LICENSE_TEXT}</pre>
+    `;
+}
+</script>
+
+</body>
+</html>
