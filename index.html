@@ -2,141 +2,298 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Mes Mods Minecraft</title>
+<title>BlockName – Mods Minecraft</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+    :root {
+        --accent: #4caf50;
+        --accent-hover: #56c25a;
+        --radius: 14px;
+        --transition: 0.25s ease;
+    }
+
+    /* Mode sombre */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg: #0f1115;
+            --bg-alt: #181b22;
+            --text: #f5f5f5;
+            --muted: #a0a0a0;
+            --border: #2a2e3a;
+        }
+    }
+
+    /* Mode clair */
+    @media (prefers-color-scheme: light) {
+        :root {
+            --bg: #f5f5f5;
+            --bg-alt: #ffffff;
+            --text: #1a1a1a;
+            --muted: #555;
+            --border: #d0d0d0;
+        }
+    }
+
     body {
         margin: 0;
-        font-family: Arial, sans-serif;
-        background: #1e1e1e;
-        color: white;
+        font-family: system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
         display: flex;
-        height: 100vh;
+        min-height: 100vh;
+        transition: background var(--transition), color var(--transition);
     }
 
-    /* Sidebar gauche */
+    /* Sélecteur de langue */
+    #langSelector {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 6px 10px;
+        color: var(--muted);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    #content {
+        flex: 1;
+        padding: 24px;
+    }
+
+    #card {
+        background: var(--bg-alt);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        padding: 24px;
+        max-width: 800px;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+        transition: var(--transition);
+        animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 { margin: 0 0 8px; font-size: 28px; display: flex; align-items: center; gap: 12px; }
+    h2 { margin: 0 0 12px; font-size: 18px; color: var(--muted); }
+
+    p { color: var(--muted); }
+
+    .btn-row { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn {
+        padding: 10px 16px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 14px;
+        background: var(--accent);
+        color: white;
+        transition: var(--transition);
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn.secondary {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--muted);
+    }
+
+    .btn:hover { background: var(--accent-hover); }
+    .btn.secondary:hover { background: rgba(255,255,255,0.05); }
+
+    pre {
+        background: var(--bg);
+        border-radius: var(--radius);
+        padding: 16px;
+        border: 1px solid var(--border);
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        max-height: 60vh;
+        overflow: auto;
+    }
+
     #sidebar {
-        width: -260px;
-        background: #2b2b2b;
-        border-left: 2px solid #444;
+        width: 260px;
+        background: var(--bg-alt);
+        border-left: 1px solid var(--border);
         padding: 20px;
-        overflow-y: auto;
-    }
-
-    #sidebar h2 {
-        margin-top: 0;
-        text-align: center;
+        transition: var(--transition);
     }
 
     .mod-item {
         padding: 10px;
-        margin: 8px 0;
-        background: #3a3a3a;
-        border-radius: 6px;
+        border-radius: var(--radius);
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--border);
         cursor: pointer;
-        transition: 0.2s;
+        margin-bottom: 10px;
+        transition: var(--transition);
     }
 
     .mod-item:hover {
-        background: #505050;
+        background: rgba(255,255,255,0.05);
     }
 
-    /* Zone centrale */
-    #content {
-        flex: 1;
-        padding: 20px;
-        overflow-y: auto;
+    /* Responsive */
+    @media (max-width: 800px) {
+        body { flex-direction: column-reverse; }
+        #sidebar { width: 100%; border-left: none; border-top: 1px solid var(--border); display: flex; overflow-x: auto; }
+        .mod-item { min-width: 180px; }
     }
 
-    .btn {
-        display: inline-block;
-        padding: 10px 15px;
-        margin: 10px 5px 0 0;
-        background: #4caf50;
-        color: white;
-        border-radius: 5px;
-        text-decoration: none;
-    }
-
-    .btn:hover {
-        background: #45a049;
-    }
-
-    pre {
-        background: #111;
-        padding: 15px;
-        border-radius: 8px;
-        white-space: pre-wrap;
-        word-wrap: break-word;
+    /* Logo */
+    #logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
     }
 </style>
 </head>
 <body>
 
-<!-- Contenu principal -->
+<!-- Sélecteur de langue -->
+<select id="langSelector" onchange="changeLang(this.value)">
+    <option value="auto">🌍 Auto</option>
+    <option value="fr">🇫🇷 Français</option>
+    <option value="en">🇬🇧 English</option>
+    <option value="es">🇪🇸 Español</option>
+    <option value="de">🇩🇪 Deutsch</option>
+</select>
+
 <div id="content">
-    <h1>Bienvenue</h1>
-    <p>Sélectionne un mod dans la liste à droite.</p>
+    <div id="card">
+        <h1>
+            <img id="logo" src="https://i.imgur.com/9Qy7x2L.png" alt="logo">
+            <span id="title"></span>
+        </h1>
+
+        <h2 id="subtitle"></h2>
+        <p id="description1"></p>
+        <p id="description2"></p>
+
+        <div class="btn-row">
+            <a id="downloadBtn" class="btn" href="https://modrinth.com/mod/blockname" target="_blank"></a>
+            <button id="licenseBtn" class="btn secondary" onclick="showLicense()"></button>
+        </div>
+
+        <div id="extra"></div>
+    </div>
 </div>
 
-<!-- Sidebar droite -->
 <div id="sidebar">
-    <h2>Mes Mods</h2>
-
-    <div class="mod-item" onclick="showMod('blockname')">
-        BlockName
+    <div class="mod-item" onclick="resetView()">
+        <strong id="sidebarBlockName"></strong>
+        <div id="sidebarDesc"></div>
     </div>
-
-    <!-- Tu peux ajouter d'autres mods ici -->
 </div>
 
 <script>
-// LICENCE MIT (celle que tu m'as fournie)
-const LICENSE_TEXT = `
-MIT License
+// LICENCE MIT
+const LICENSE_TEXT = `MIT License
 
 Copyright (c) 2026 LeFilou2.0
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Permission is hereby granted, free of charge...
 `;
 
-function showMod(mod) {
-    if (mod === "blockname") {
-        document.getElementById("content").innerHTML = `
-            <h1>BlockName</h1>
-            <p>Mod d'affichage avancé des informations de blocs.</p>
+// 🌍 TRADUCTIONS
+const translations = {
+    fr: {
+        title: "BlockName",
+        subtitle: "Mod d’affichage avancé des informations de blocs",
+        desc1: "BlockName affiche le nom du bloc, l’outil optimal, les enchantements utiles et des informations avancées.",
+        desc2: "Interface propre, animations, configuration JSON et intégration ModMenu.",
+        download: "Télécharger sur Modrinth",
+        license: "Voir la licence",
+        sidebarName: "BlockName",
+        sidebarDesc: "Infos de blocs, outils, loot…"
+    },
+    en: {
+        title: "BlockName",
+        subtitle: "Advanced block information display mod",
+        desc1: "BlockName shows block names, optimal tools, useful enchantments and advanced technical data.",
+        desc2: "Clean UI, animations, JSON config and ModMenu integration.",
+        download: "Download on Modrinth",
+        license: "View License",
+        sidebarName: "BlockName",
+        sidebarDesc: "Block info, tools, loot…"
+    },
+    es: {
+        title: "BlockName",
+        subtitle: "Mod de información avanzada de bloques",
+        desc1: "BlockName muestra el nombre del bloque, herramienta óptima, encantamientos útiles y datos avanzados.",
+        desc2: "Interfaz limpia, animaciones, configuración JSON e integración con ModMenu.",
+        download: "Descargar en Modrinth",
+        license: "Ver licencia",
+        sidebarName: "BlockName",
+        sidebarDesc: "Información de bloques, herramientas, loot…"
+    },
+    de: {
+        title: "BlockName",
+        subtitle: "Mod zur erweiterten Blockinformation",
+        desc1: "BlockName zeigt Blocknamen, optimale Werkzeuge, nützliche Verzauberungen und technische Daten.",
+        desc2: "Saubere UI, Animationen, JSON‑Konfiguration und ModMenu‑Integration.",
+        download: "Auf Modrinth herunterladen",
+        license: "Lizenz anzeigen",
+        sidebarName: "BlockName",
+        sidebarDesc: "Blockinfos, Werkzeuge, Loot…"
+    }
+};
 
-            <a class="btn" href="https://modrinth.com/mod/blockname" target="_blank">
-                Télécharger sur Modrinth
-            </a>
+// 🌍 LANGUE ACTUELLE
+let currentLang = "auto";
 
-            <a class="btn" href="#" onclick="showLicense()">
-                Voir la licence
-            </a>
-        `;
+// 🌍 DÉTECTION AUTOMATIQUE
+function detectLang() {
+    const userLang = navigator.language.slice(0,2);
+    return translations[userLang] ? userLang : "en";
+}
+
+// 🌍 APPLIQUER LES TRADUCTIONS
+function applyTranslations(lang) {
+    const t = translations[lang];
+
+    document.getElementById("title").textContent = t.title;
+    document.getElementById("subtitle").textContent = t.subtitle;
+    document.getElementById("description1").textContent = t.desc1;
+    document.getElementById("description2").textContent = t.desc2;
+    document.getElementById("downloadBtn").textContent = t.download;
+    document.getElementById("licenseBtn").textContent = t.license;
+    document.getElementById("sidebarBlockName").textContent = t.sidebarName;
+    document.getElementById("sidebarDesc").textContent = t.sidebarDesc;
+
+    // Animation douce
+    document.getElementById("card").style.animation = "fadeIn 0.4s ease";
+}
+
+// 🌍 CHANGER DE LANGUE MANUELLEMENT
+function changeLang(value) {
+    currentLang = value;
+
+    if (value === "auto") {
+        applyTranslations(detectLang());
+    } else {
+        applyTranslations(value);
     }
 }
 
+// 🌍 INITIALISATION
+changeLang("auto");
+
+// LICENCE
 function showLicense() {
-    document.getElementById("content").innerHTML = `
-        <h1>Licence</h1>
-        <pre>${LICENSE_TEXT}</pre>
-    `;
+    document.getElementById("extra").innerHTML = `<h2>License</h2><pre>${LICENSE_TEXT}</pre>`;
+}
+
+function resetView() {
+    document.getElementById("extra").innerHTML = "";
 }
 </script>
 
