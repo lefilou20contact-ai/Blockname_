@@ -1,0 +1,21 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IntelliJ IDEA / VS Code
+.idea/
+*.iml
+.vscode/
+*.class
+
+# Fabric / Minecraft
+run/
+.fabric/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+local.properties
