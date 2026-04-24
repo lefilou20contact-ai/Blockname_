@@ -58,6 +58,7 @@ public class BlockNameConfig {
         public UiConfig         ui          = new UiConfig();
         public DebugConfig      debug       = new DebugConfig();
         public PerformanceConfig performance = new PerformanceConfig();
+        public I18nConfig        i18n        = new I18nConfig();
     }
 
     public static class ScanConfig {
@@ -99,5 +100,9 @@ public class BlockNameConfig {
         public boolean cacheEnabled = true;
         public int     cacheSize    = 256;
         public int     tickInterval = 2;
+    }
+
+    public static class I18nConfig {
+        public String language = "auto"; // "auto" = suit la langue de Minecraft
     }
 }
