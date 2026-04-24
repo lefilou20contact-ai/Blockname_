@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "blockname",
+  "version": "${version}",
+  "name": "BlockName",
+  "description": "Affiche le nom, l'outil requis, et les infos détaillées de chaque bloc pointé. Mode scan, debug, UI verre, thèmes, cache optimisé.",
+  "authors": [
+    "Dominique"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/blockname",
+    "sources": "https://github.com/dominique/blockname",
+    "issues": "https://github.com/dominique/blockname/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/blockname/textures/icon/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.dominique.blockname.BlockNameClient"
+    ]
+  },
+  "mixins": [
+    "blockname.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.0",
+    "fabric-api": "*",
+    "minecraft": ">=1.20.1"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "config_factory": "dev.dominique.blockname.config.ModMenuIntegration"
+    }
+  }
+}
