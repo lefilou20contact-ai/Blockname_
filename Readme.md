@@ -94,5 +94,3 @@ Fichier : `config/blockname.json` (créé automatiquement)
 ## 📄 Licence
 
 MIT — voir [LICENSE](LICENSE)
-
-*Fait avec ❤️ par Dominique*
