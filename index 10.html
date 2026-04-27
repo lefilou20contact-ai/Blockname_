@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>BlockName – Mods Minecraft</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+    --accent: #4caf50;
+    --accent-hover: #56c25a;
+    --radius: 14px;
+    --transition: 0.25s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+:root {
+    --bg: #0f1115;
+    --bg-alt: #181b22;
+    --text: #f5f5f5;
+    --muted: #a0a0a0;
+    --border: #2a2e3a;
+}
+}
+
+@media (prefers-color-scheme: light) {
+:root {
+    --bg: #f5f5f5;
+    --bg-alt: #ffffff;
+    --text: #1a1a1a;
+    --muted: #555;
+    --border: #d0d0d0;
+}
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    transition: background var(--transition), color var(--transition);
+}
+
+#langSelector {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 99;
+}
+
+#content {
+    flex: 1;
+    padding: 24px;
+}
+
+#card {
+    background: var(--bg-alt);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 24px;
+    max-width: 800px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+    transition: var(--transition);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+h1 { margin: 0 0 8px; font-size: 28px; display: flex; align-items: center; gap: 12px; }
+h2 { margin: 0 0 12px; font-size: 18px; color: var(--muted); }
+p  { color: var(--muted); }
+
+.btn-row { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn {
+    padding: 10px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 14px;
+    background: var(--accent);
+    color: white;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+}
+
+.btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+}
+
+.btn:hover { background: var(--accent-hover); }
+.btn.secondary:hover { background: rgba(255,255,255,0.05); }
+
+pre {
+    background: var(--bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    border: 1px solid var(--border);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 60vh;
+    overflow: auto;
+}
+
+#extra { margin-top: 16px; }
+
+#sidebar {
+    width: 260px;
+    background: var(--bg-alt);
+    border-left: 1px solid var(--border);
+    padding: 20px;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.mod-item {
+    padding: 10px;
+    border-radius: var(--radius);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: var(--transition);
+}
+
+.mod-item:hover { background: rgba(255,255,255,0.05); }
+.mod-item strong { display: block; margin-bottom: 4px; }
+.mod-item div { color: var(--muted); font-size: 12px; }
+
+#logo { width: 40px; height: 40px; border-radius: 6px; }
+
+.key-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.key-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
+.key-table tr:last-child td { border-bottom: none; }
+.key {
+    display: inline-block;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--text);
+}
+
+.wiki-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+}
+.wiki-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: var(--transition);
+    display: block;
+}
+.wiki-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
+.wiki-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.wiki-card span { font-size: 12px; color: var(--muted); }
+
+@media (max-width: 800px) {
+    body { flex-direction: column-reverse; }
+    #sidebar { width: 100%; border-left: none; border-top: 1px solid var(--border); display: flex; overflow-x: auto; padding: 12px; gap: 10px; }
+    .mod-item { min-width: 180px; flex-shrink: 0; margin-bottom: 0; }
+    .wiki-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<select id="langSelector" onchange="changeLang(this.value)">
+    <option value="auto">🌍 Auto</option>
+    <option value="fr">🇫🇷 Français</option>
+    <option value="en">🇬🇧 English</option>
+    <option value="es">🇪🇸 Español</option>
+    <option value="de">🇩🇪 Deutsch</option>
+</select>
+
+<div id="content">
+    <div id="card">
+
+        <h1>
+            <img id="logo" src="icon.png" alt="logo" onerror="this.style.display='none'">
+            <span id="title"></span>
+        </h1>
+
+        <h2 id="subtitle"></h2>
+        <p id="description1"></p>
+        <p id="description2"></p>
+
+        <div class="btn-row">
+            <a id="downloadBtn" class="btn" href="https://modrinth.com/mod/blockname" target="_blank"></a>
+            <button id="licenseBtn" class="btn secondary" onclick="showLicense()"></button>
+            <button id="translateBtn" class="btn secondary" onclick="translateLicense()"></button>
+            <button class="btn secondary" onclick="showKeys()">⌨️ Raccourcis</button>
+            <button class="btn secondary" onclick="showWiki()">📖 Wiki</button>
+            <a class="btn secondary" href="https://paypal.me/lefilou20yt?country.x=FR&locale.x=fr_FR" target="_blank">❤️ Soutenir</a>
+        </div>
+
+        <div id="extra"></div>
+
+    </div>
+</div>
+
+<div id="sidebar">
+    <div class="mod-item" onclick="resetView()">
+        <strong id="sidebarBlockName"></strong>
+        <div id="sidebarDesc"></div>
+    </div>
+    <div class="mod-item" onclick="openComments()">
+        <strong>💬 Commentaires</strong>
+        <div>Signaler un bug, donner un avis…</div>
+    </div>
+</div>
+
+<script>
+
+const LICENSE_TEXT = `MIT License
+Copyright (c) 2026 LeFilou2.0
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.`;
+
+const translatedVersions = {
+    fr: `Licence MIT
+Copyright (c) 2026 LeFilou2.0
+
+La permission est accordée, à titre gratuit, à toute personne obtenant une copie
+de ce logiciel et de sa documentation associée (le « Logiciel »), de traiter le
+Logiciel sans restriction, y compris, sans limitation, les droits d'utiliser, de
+copier, de modifier, de fusionner, de publier, de distribuer, de concéder en
+sous-licence et/ou de vendre des copies du Logiciel, et de permettre aux personnes
+auxquelles le Logiciel est fourni de faire de même, sous réserve des conditions
+suivantes :
+
+La présente mention de droit d'auteur et la présente mention d'autorisation doivent
+être incluses dans toutes les copies ou parties substantielles du Logiciel.
+
+LE LOGICIEL EST FOURNI « TEL QUEL », SANS GARANTIE D'AUCUNE SORTE, EXPRESSE OU
+IMPLICITE, Y COMPRIS, MAIS SANS S'Y LIMITER, LES GARANTIES DE QUALITÉ MARCHANDE,
+D'ADÉQUATION À UN USAGE PARTICULIER ET D'ABSENCE DE CONTREFAÇON. EN AUCUN CAS,
+LES AUTEURS OU LES DÉTENTEURS DE DROITS D'AUTEUR NE SERONT RESPONSABLES DE TOUTE
+RÉCLAMATION, DE TOUT DOMMAGE OU DE TOUTE AUTRE RESPONSABILITÉ, QUE CE SOIT DANS
+LE CADRE D'UNE ACTION CONTRACTUELLE, DÉLICTUELLE OU AUTRE, DÉCOULANT DE, OU EN
+RELATION AVEC LE LOGICIEL OU SON UTILISATION.`,
+    es: `Licencia MIT
+Copyright (c) 2026 LeFilou2.0
+
+Se otorga permiso, de forma gratuita, a cualquier persona que obtenga una copia
+de este software y los archivos de documentación asociados (el "Software"), para
+utilizar el Software sin restricciones, incluyendo los derechos de uso, copia,
+modificación, fusión, publicación, distribución, sublicencia y/o venta de copias
+del Software, y para permitir que las personas a quienes se les proporcione el
+Software hagan lo mismo, sujeto a las siguientes condiciones:
+
+El aviso de copyright anterior y este aviso de permiso deberán incluirse en todas
+las copias o partes sustanciales del Software.
+
+EL SOFTWARE SE PROPORCIONA «TAL CUAL», SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O
+IMPLÍCITA, INCLUYENDO LAS GARANTÍAS DE COMERCIABILIDAD, IDONEIDAD PARA UN FIN
+PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES O TITULARES DE LOS DERECHOS
+DE AUTOR SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN, DAÑO U OTRA RESPONSABILIDAD.`,
+    de: `MIT-Lizenz
+Copyright (c) 2026 LeFilou2.0
+
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen
+Dokumentationsdateien (die „Software") erhält, unentgeltlich die Erlaubnis erteilt,
+die Software ohne Einschränkung zu nutzen, einschließlich der Rechte, Kopien zu
+verwenden, zu kopieren, zu ändern, zusammenzuführen, zu veröffentlichen, zu
+verbreiten, unterzulizenzieren und/oder zu verkaufen, unter den folgenden
+Bedingungen:
+
+Der obige Urheberrechtshinweis und dieser Lizenzhinweis müssen in allen Kopien
+oder wesentlichen Teilen der Software enthalten sein.
+
+DIE SOFTWARE WIRD OHNE MÄNGELGEWÄHR UND OHNE JEGLICHE AUSDRÜCKLICHE ODER
+STILLSCHWEIGENDE GEWÄHRLEISTUNG BEREITGESTELLT. DIE AUTOREN HAFTEN IN KEINEM FALL
+FÜR ANSPRÜCHE, SCHÄDEN ODER SONSTIGE HAFTUNG AUS DER NUTZUNG DER SOFTWARE.`,
+    en: LICENSE_TEXT
+};
+
+const translations = {
+    fr: {
+        title: "BlockName",
+        subtitle: "Mod d'affichage avancé des informations de blocs",
+        desc1: "BlockName affiche le nom du bloc, l'outil optimal, les enchantements utiles et des informations avancées.",
+        desc2: "Interface propre, animations, configuration JSON et intégration ModMenu.",
+        download: "⬇ Télécharger sur Modrinth",
+        license: "📄 Voir la licence",
+        translateLicense: "🌍 Licence traduite",
+        translatedTitle: "Licence (traduction FR)",
+        sidebarName: "BlockName",
+        sidebarDesc: "Infos de blocs, outils, loot…"
+    },
+    en: {
+        title: "BlockName",
+        subtitle: "Advanced block information display mod",
+        desc1: "BlockName shows block names, optimal tools, useful enchantments and advanced technical data.",
+        desc2: "Clean UI, animations, JSON config and ModMenu integration.",
+        download: "⬇ Download on Modrinth",
+        license: "📄 View License",
+        translateLicense: "🌍 Translated License",
+        translatedTitle: "License (EN)",
+        sidebarName: "BlockName",
+        sidebarDesc: "Block info, tools, loot…"
+    },
+    es: {
+        title: "BlockName",
+        subtitle: "Mod de información avanzada de bloques",
+        desc1: "BlockName muestra el nombre del bloque, herramienta óptima, encantamientos útiles y datos avanzados.",
+        desc2: "Interfaz limpia, animaciones, configuración JSON e integración con ModMenu.",
+        download: "⬇ Descargar en Modrinth",
+        license: "📄 Ver licencia",
+        translateLicense: "🌍 Licencia traducida",
+        translatedTitle: "Licencia traducida",
+        sidebarName: "BlockName",
+        sidebarDesc: "Información de bloques, herramientas, loot…"
+    },
+    de: {
+        title: "BlockName",
+        subtitle: "Mod zur erweiterten Blockinformation",
+        desc1: "BlockName zeigt Blocknamen, optimale Werkzeuge, nützliche Verzauberungen und technische Daten.",
+        desc2: "Saubere UI, Animationen, JSON‑Konfiguration und ModMenu‑Integration.",
+        download: "⬇ Auf Modrinth herunterladen",
+        license: "📄 Lizenz anzeigen",
+        translateLicense: "🌍 Übersetzte Lizenz",
+        translatedTitle: "Übersetzte Lizenz",
+        sidebarName: "BlockName",
+        sidebarDesc: "Blockinfos, Werkzeuge, Loot…"
+    }
+};
+
+let currentLang = "auto";
+
+function detectLang() {
+    const l = navigator.language.slice(0, 2);
+    return translations[l] ? l : "en";
+}
+
+function applyTranslations(lang) {
+    const t = translations[lang];
+    document.getElementById("title").textContent        = t.title;
+    document.getElementById("subtitle").textContent     = t.subtitle;
+    document.getElementById("description1").textContent = t.desc1;
+    document.getElementById("description2").textContent = t.desc2;
+    document.getElementById("downloadBtn").textContent  = t.download;
+    document.getElementById("licenseBtn").textContent   = t.license;
+    document.getElementById("translateBtn").textContent = t.translateLicense;
+    document.getElementById("sidebarBlockName").textContent = t.sidebarName;
+    document.getElementById("sidebarDesc").textContent  = t.sidebarDesc;
+}
+
+function changeLang(value) {
+    currentLang = value;
+    applyTranslations(value === "auto" ? detectLang() : value);
+}
+
+changeLang("auto");
+
+function showLicense() {
+    document.getElementById("extra").innerHTML =
+        `<h2>📄 License</h2><pre>${LICENSE_TEXT}</pre>`;
+}
+
+function translateLicense() {
+    const lang = currentLang === "auto" ? detectLang() : currentLang;
+    const t = translations[lang];
+    document.getElementById("extra").innerHTML =
+        `<h2>${t.translatedTitle}</h2><pre>${translatedVersions[lang] || translatedVersions.en}</pre>`;
+}
+
+function showKeys() {
+    document.getElementById("extra").innerHTML = `
+        <h2>⌨️ Raccourcis clavier</h2>
+        <table class="key-table">
+            <tr>
+                <td><span class="key">F9</span></td>
+                <td>Activer / désactiver le mode Scan</td>
+            </tr>
+            <tr>
+                <td><span class="key">F10</span></td>
+                <td>Activer / désactiver le mode Debug</td>
+            </tr>
+        </table>
+        <p style="margin-top:12px;font-size:13px;">💡 Les touches sont reconfigurables dans <strong>Options → Touches</strong> de Minecraft.</p>
+    `;
+}
+
+function showWiki() {
+    document.getElementById("extra").innerHTML = `
+        <h2>📖 Wiki</h2>
+        <p style="margin-bottom:12px;">Documentation complète du mod BlockName.</p>
+        <div class="wiki-grid">
+            <a class="wiki-card" href="https://github.com/lefilou20contact-ai/Blockname_/wiki/Installation" target="_blank">
+                <strong>📦 Installation</strong>
+                <span>Comment installer BlockName et ses dépendances</span>
+            </a>
+            <a class="wiki-card" href="https://github.com/lefilou20contact-ai/Blockname_/wiki/Configuration" target="_blank">
+                <strong>⚙️ Configuration</strong>
+                <span>Personnaliser le mod via JSON ou ModMenu</span>
+            </a>
+            <a class="wiki-card" href="https://github.com/lefilou20contact-ai/Blockname_/wiki/Fonctionnalit%C3%A9s" target="_blank">
+                <strong>✨ Fonctionnalités</strong>
+                <span>Toutes les fonctionnalités détaillées</span>
+            </a>
+            <a class="wiki-card" href="https://github.com/lefilou20contact-ai/Blockname_/wiki/Raccourcis-Clavier" target="_blank">
+                <strong>⌨️ Raccourcis clavier</strong>
+                <span>Touches et reconfiguration</span>
+            </a>
+            <a class="wiki-card" href="https://github.com/lefilou20contact-ai/Blockname_/wiki/FAQ" target="_blank">
+                <strong>❓ FAQ</strong>
+                <span>Questions fréquentes et solutions</span>
+            </a>
+            <a class="wiki-card" href="https://github.com/lefilou20contact-ai/Blockname_/wiki/Changelog" target="_blank">
+                <strong>📝 Changelog</strong>
+                <span>Historique des versions</span>
+            </a>
+            <a class="wiki-card" href="https://github.com/lefilou20contact-ai/Blockname_/wiki" target="_blank" style="grid-column:1/-1;text-align:center;">
+                <strong>🌐 Voir tout le wiki →</strong>
+                <span>github.com/lefilou20contact-ai/Blockname_/wiki</span>
+            </a>
+        </div>
+    `;
+}
+
+function openComments() {
+    document.getElementById("extra").innerHTML = `
+        <h2>💬 Commentaires / Bugs / Reports</h2>
+        <p>Vous pouvez signaler un bug, proposer une amélioration ou laisser un commentaire ci‑dessous.</p>
+        <div id="comments"></div>`;
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", "lefilou20contact-ai/Blockname_");
+    script.setAttribute("data-repo-id", "R_kgDOSKq3kA");
+    script.setAttribute("data-category", "General");
+    script.setAttribute("data-category-id", "DIC_kwDOSKq3kM4C7uHp");
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "bottom");
+    script.setAttribute("data-theme", "preferred_color_scheme");
+    script.setAttribute("data-lang", "fr");
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+    document.getElementById("comments").appendChild(script);
+}
+
+function resetView() {
+    document.getElementById("extra").innerHTML = "";
+}
+
+</script>
+</body>
+</html>
