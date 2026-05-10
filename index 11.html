@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>LeFilou2.0 — Mods Minecraft</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+    --accent: #4caf50;
+    --accent-hover: #56c25a;
+    --radius: 14px;
+    --transition: 0.25s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+:root {
+    --bg: #0f1115;
+    --bg-alt: #181b22;
+    --text: #f5f5f5;
+    --muted: #a0a0a0;
+    --border: #2a2e3a;
+}
+}
+
+@media (prefers-color-scheme: light) {
+:root {
+    --bg: #f5f5f5;
+    --bg-alt: #ffffff;
+    --text: #1a1a1a;
+    --muted: #555;
+    --border: #d0d0d0;
+}
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    transition: background var(--transition), color var(--transition);
+}
+
+#langSelector {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 99;
+}
+
+#content {
+    flex: 1;
+    padding: 24px;
+}
+
+#card {
+    background: var(--bg-alt);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 24px;
+    max-width: 800px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+    transition: var(--transition);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+h1 { margin: 0 0 8px; font-size: 28px; display: flex; align-items: center; gap: 12px; }
+h2 { margin: 0 0 12px; font-size: 18px; color: var(--muted); }
+p  { color: var(--muted); }
+
+.btn-row { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn {
+    padding: 10px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 14px;
+    background: var(--accent);
+    color: white;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+}
+
+.btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+}
+
+.btn:hover { background: var(--accent-hover); color: white; }
+.btn.secondary:hover { background: rgba(255,255,255,0.05); }
+
+pre {
+    background: var(--bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    border: 1px solid var(--border);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 60vh;
+    overflow: auto;
+}
+
+#extra { margin-top: 16px; }
+
+#sidebar {
+    width: 260px;
+    background: var(--bg-alt);
+    border-left: 1px solid var(--border);
+    padding: 20px;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+#sidebar h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 0 0 12px;
+}
+
+.mod-item {
+    padding: 10px;
+    border-radius: var(--radius);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: var(--transition);
+}
+
+.mod-item:hover { background: rgba(255,255,255,0.07); }
+.mod-item.active { border-color: var(--accent); background: rgba(76,175,80,0.08); }
+.mod-item strong { display: block; margin-bottom: 4px; }
+.mod-item div { color: var(--muted); font-size: 12px; }
+
+.mod-logo {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+#logo { width: 40px; height: 40px; border-radius: 6px; }
+
+.key-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.key-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
+.key-table tr:last-child td { border-bottom: none; }
+.key {
+    display: inline-block;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--text);
+}
+
+.wiki-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+}
+.wiki-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: var(--transition);
+    display: block;
+}
+.wiki-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
+.wiki-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.wiki-card span { font-size: 12px; color: var(--muted); }
+
+.sidebar-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 14px 0;
+}
+
+@media (max-width: 800px) {
+    body { flex-direction: column-reverse; }
+    #sidebar { width: 100%; border-left: none; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; overflow-x: auto; padding: 12px; gap: 10px; }
+    #sidebar h3 { width: 100%; margin-bottom: 4px; }
+    .mod-item { min-width: 160px; flex-shrink: 0; margin-bottom: 0; }
+    .sidebar-divider { display: none; }
+    .wiki-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<select id="langSelector" onchange="changeLang(this.value)">
+    <option value="auto">🌍 Auto</option>
+    <option value="fr">🇫🇷 Français</option>
+    <option value="en">🇬🇧 English</option>
+    <option value="es">🇪🇸 Español</option>
+    <option value="de">🇩🇪 Deutsch</option>
+</select>
+
+<div id="content">
+    <div id="card">
+
+        <h1>
+            <img id="logo" src="icon.png" alt="logo" onerror="this.style.display='none'">
+            <span id="title"></span>
+        </h1>
+
+        <h2 id="subtitle"></h2>
+        <p id="description1"></p>
+        <p id="description2"></p>
+
+        <div class="btn-row">
+            <a id="downloadBtn" class="btn" href="#" target="_blank"></a>
+            <button id="licenseBtn" class="btn secondary" onclick="showLicense()"></button>
+            <button id="translateBtn" class="btn secondary" onclick="translateLicense()"></button>
+            <button id="keysBtn" class="btn secondary" onclick="showKeys()">⌨️ Raccourcis</button>
+            <button id="wikiBtn" class="btn secondary" onclick="showWiki()">📖 Wiki</button>
+            <a class="btn secondary" href="https://paypal.me/lefilou20yt?country.x=FR&locale.x=fr_FR" target="_blank">❤️ Soutenir</a>
+        </div>
+
+        <div id="extra"></div>
+
+    </div>
+</div>
+
+<div id="sidebar">
+    <h3>Mes Mods</h3>
+
+    <div class="mod-item active" id="item-blockname" onclick="switchMod('blockname')">
+        <strong>🔍 BlockName</strong>
+        <div>Infos de blocs, outils, loot…</div>
+    </div>
+
+    <div class="mod-item" id="item-ultraenchante" onclick="switchMod('ultraenchante')">
+        <strong>⚔️ UltraEnchante</strong>
+        <div>42 enchantements custom RPG…</div>
+    </div>
+
+    <hr class="sidebar-divider">
+
+    <div class="mod-item" onclick="openComments()">
+        <strong>💬 Commentaires</strong>
+        <div>Signaler un bug, donner un avis…</div>
+    </div>
+</div>
+
+<script>
+
+// ── Données des mods ──────────────────────────────────────────────────────────
+
+const MODS = {
+    blockname: {
+        icon: "icon.png",
+        modrinth: "https://modrinth.com/mod/blockname",
+        github: "https://github.com/lefilou20contact-ai/Blockname_",
+        wiki: "https://github.com/lefilou20contact-ai/Blockname_/wiki",
+        giscus: {
+            repo: "lefilou20contact-ai/Blockname_",
+            repoId: "R_kgDOSKq3kA",
+            category: "General",
+            categoryId: "DIC_kwDOSKq3kM4C7uHp"
+        },
+        keys: [
+            { key: "F9",  action_fr: "Activer / désactiver le mode Scan", action_en: "Toggle Scan Mode" },
+            { key: "F10", action_fr: "Activer / désactiver le mode Debug", action_en: "Toggle Debug Mode" }
+        ],
+        wikiPages: [
+            { url: "Installation",         icon: "📦", title_fr: "Installation",    desc_fr: "Installer BlockName et ses dépendances" },
+            { url: "Configuration",        icon: "⚙️", title_fr: "Configuration",   desc_fr: "Personnaliser via JSON ou ModMenu" },
+            { url: "Fonctionnalit%C3%A9s", icon: "✨", title_fr: "Fonctionnalités", desc_fr: "Toutes les fonctionnalités détaillées" },
+            { url: "Raccourcis-Clavier",   icon: "⌨️", title_fr: "Raccourcis",      desc_fr: "Touches et reconfiguration" },
+            { url: "FAQ",                  icon: "❓", title_fr: "FAQ",             desc_fr: "Questions fréquentes et solutions" },
+            { url: "Changelog",            icon: "📝", title_fr: "Changelog",       desc_fr: "Historique des versions" },
+        ],
+        translations: {
+            fr: {
+                title: "BlockName",
+                subtitle: "Mod d'affichage avancé des informations de blocs",
+                desc1: "BlockName affiche le nom du bloc, l'outil optimal, les enchantements utiles et des informations avancées.",
+                desc2: "Interface propre, animations, configuration JSON et intégration ModMenu.",
+                download: "⬇ Télécharger sur Modrinth",
+                license: "📄 Voir la licence",
+                translateLicense: "🌍 Licence traduite",
+                translatedTitle: "Licence (traduction FR)",
+            },
+            en: {
+                title: "BlockName",
+                subtitle: "Advanced block information display mod",
+                desc1: "BlockName shows block names, optimal tools, useful enchantments and advanced technical data.",
+                desc2: "Clean UI, animations, JSON config and ModMenu integration.",
+                download: "⬇ Download on Modrinth",
+                license: "📄 View License",
+                translateLicense: "🌍 Translated License",
+                translatedTitle: "License (EN)",
+            },
+            es: {
+                title: "BlockName",
+                subtitle: "Mod de información avanzada de bloques",
+                desc1: "BlockName muestra el nombre del bloque, herramienta óptima, encantamientos útiles y datos avanzados.",
+                desc2: "Interfaz limpia, animaciones, configuración JSON e integración con ModMenu.",
+                download: "⬇ Descargar en Modrinth",
+                license: "📄 Ver licencia",
+                translateLicense: "🌍 Licencia traducida",
+                translatedTitle: "Licencia traducida",
+            },
+            de: {
+                title: "BlockName",
+                subtitle: "Mod zur erweiterten Blockinformation",
+                desc1: "BlockName zeigt Blocknamen, optimale Werkzeuge, nützliche Verzauberungen und technische Daten.",
+                desc2: "Saubere UI, Animationen, JSON‑Konfiguration und ModMenu‑Integration.",
+                download: "⬇ Auf Modrinth herunterladen",
+                license: "📄 Lizenz anzeigen",
+                translateLicense: "🌍 Übersetzte Lizenz",
+                translatedTitle: "Übersetzte Lizenz",
+            }
+        }
+    },
+
+    ultraenchante: {
+        icon: "https://raw.githubusercontent.com/lefilou20contact-ai/UltraEnchante/main/icon.png",
+        modrinth: "https://modrinth.com/mod/ultraenchante",
+        github: "https://github.com/lefilou20contact-ai/UltraEnchante",
+        wiki: "https://github.com/lefilou20contact-ai/UltraEnchante/wiki",
+        giscus: {
+            repo: "lefilou20contact-ai/UltraEnchante",
+            repoId: "R_kgDOSg_Rg",
+            category: "General",
+            categoryId: "DIC_kwDOSg_Rs4C8tYM"
+        },
+        keys: [],
+        wikiPages: [
+            { url: "%F0%9F%8F%A0-Home",              icon: "🏠", title_fr: "Accueil",        desc_fr: "Page d'accueil du wiki UltraEnchante" },
+            { url: "%F0%9F%93%A6-Installation",       icon: "📦", title_fr: "Installation",   desc_fr: "Installer UltraEnchante et ses dépendances" },
+            { url: "%E2%9A%99%EF%B8%8F-Configuration",icon: "⚙️", title_fr: "Configuration",  desc_fr: "Personnaliser les enchantements" },
+            { url: "%E2%9C%A8-Fonctionnalit%C3%A9s",  icon: "✨", title_fr: "Fonctionnalités", desc_fr: "Les 42 enchantements en détail" },
+            { url: "%E2%8C%A8%EF%B8%8F-Raccourcis-clavier", icon: "⌨️", title_fr: "Raccourcis", desc_fr: "Touches et reconfiguration" },
+            { url: "%E2%9D%93-FAQ",                   icon: "❓", title_fr: "FAQ",             desc_fr: "Questions fréquentes et solutions" },
+            { url: "%F0%9F%93%9D-Changelog",          icon: "📝", title_fr: "Changelog",       desc_fr: "Historique des versions" },
+        ],
+        translations: {
+            fr: {
+                title: "UltraEnchante",
+                subtitle: "42 enchantements custom pour Fabric 1.20+",
+                desc1: "Transforme ton Minecraft en véritable RPG avec une collection massive d'enchantements uniques.",
+                desc2: "Répartis sur toutes tes pièces d'équipement — armes, armures, outils.",
+                download: "⬇ Télécharger sur Modrinth",
+                license: "📄 Voir la licence",
+                translateLicense: "🌍 Licence traduite",
+                translatedTitle: "Licence (traduction FR)",
+            },
+            en: {
+                title: "UltraEnchante",
+                subtitle: "42 custom enchantments for Fabric 1.20+",
+                desc1: "Transform your Minecraft into a real RPG with a massive collection of unique enchantments.",
+                desc2: "Spread across all your equipment — weapons, armor, tools.",
+                download: "⬇ Download on Modrinth",
+                license: "📄 View License",
+                translateLicense: "🌍 Translated License",
+                translatedTitle: "License (EN)",
+            },
+            es: {
+                title: "UltraEnchante",
+                subtitle: "42 encantamientos personalizados para Fabric 1.20+",
+                desc1: "Transforma tu Minecraft en un verdadero RPG con una colección masiva de encantamientos únicos.",
+                desc2: "Distribuidos en todo tu equipo — armas, armadura, herramientas.",
+                download: "⬇ Descargar en Modrinth",
+                license: "📄 Ver licencia",
+                translateLicense: "🌍 Licencia traducida",
+                translatedTitle: "Licencia traducida",
+            },
+            de: {
+                title: "UltraEnchante",
+                subtitle: "42 benutzerdefinierte Verzauberungen für Fabric 1.20+",
+                desc1: "Verwandle dein Minecraft in ein echtes RPG mit einer riesigen Sammlung einzigartiger Verzauberungen.",
+                desc2: "Verteilt auf alle deine Ausrüstungsgegenstände — Waffen, Rüstung, Werkzeuge.",
+                download: "⬇ Auf Modrinth herunterladen",
+                license: "📄 Lizenz anzeigen",
+                translateLicense: "🌍 Übersetzte Lizenz",
+                translatedTitle: "Übersetzte Lizenz",
+            }
+        }
+    }
+};
+
+// ── Licence ───────────────────────────────────────────────────────────────────
+
+const LICENSE_TEXT = `MIT License
+Copyright (c) 2026 LeFilou2.0
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.`;
+
+const translatedVersions = {
+    fr: `Licence MIT — Traduction non officielle
+Copyright (c) 2026 LeFilou2.0
+
+La permission est accordée, à titre gratuit, à toute personne obtenant une copie
+de ce logiciel et de sa documentation associée, de traiter le Logiciel sans
+restriction, y compris les droits d'utiliser, copier, modifier, fusionner, publier,
+distribuer, sous-licencier et/ou vendre des copies du Logiciel, sous réserve des
+conditions suivantes :
+
+La mention de copyright et la présente autorisation doivent être incluses dans
+toutes les copies ou parties substantielles du Logiciel.
+
+LE LOGICIEL EST FOURNI « TEL QUEL », SANS GARANTIE D'AUCUNE SORTE, EXPRESSE OU
+IMPLICITE. EN AUCUN CAS LES AUTEURS NE SERONT RESPONSABLES DE TOUT DOMMAGE
+DÉCOULANT DE L'UTILISATION DU LOGICIEL.`,
+    es: `Licencia MIT — Traducción no oficial
+Copyright (c) 2026 LeFilou2.0
+
+Se otorga permiso, de forma gratuita, a cualquier persona que obtenga una copia
+de este software para utilizarlo sin restricciones, incluyendo los derechos de uso,
+copia, modificación, fusión, publicación, distribución, sublicencia y/o venta,
+sujeto a las siguientes condiciones:
+
+El aviso de copyright debe incluirse en todas las copias del Software.
+
+EL SOFTWARE SE PROPORCIONA «TAL CUAL», SIN GARANTÍA DE NINGÚN TIPO. EN NINGÚN
+CASO LOS AUTORES SERÁN RESPONSABLES DE NINGÚN DAÑO.`,
+    de: `MIT-Lizenz — Inoffizielle Übersetzung
+Copyright (c) 2026 LeFilou2.0
+
+Hiermit wird jeder Person die Erlaubnis erteilt, die Software ohne Einschränkung
+zu nutzen, zu kopieren, zu ändern, zusammenzuführen, zu veröffentlichen und zu
+verkaufen, unter folgenden Bedingungen:
+
+Der Urheberrechtshinweis muss in allen Kopien enthalten sein.
+
+DIE SOFTWARE WIRD OHNE MÄNGELGEWÄHR BEREITGESTELLT. DIE AUTOREN HAFTEN NICHT
+FÜR SCHÄDEN AUS DER NUTZUNG DER SOFTWARE.`,
+    en: LICENSE_TEXT
+};
+
+// ── État ──────────────────────────────────────────────────────────────────────
+
+let currentLang = "auto";
+let currentMod  = "blockname";
+
+// ── Langue ────────────────────────────────────────────────────────────────────
+
+function detectLang() {
+    const l = navigator.language.slice(0, 2);
+    return ["fr","en","es","de"].includes(l) ? l : "en";
+}
+
+function getLang() {
+    return currentLang === "auto" ? detectLang() : currentLang;
+}
+
+function applyTranslations() {
+    const mod = MODS[currentMod];
+    const lang = getLang();
+    const t = mod.translations[lang] || mod.translations.en;
+
+    document.getElementById("title").textContent        = t.title;
+    document.getElementById("subtitle").textContent     = t.subtitle;
+    document.getElementById("description1").textContent = t.desc1;
+    document.getElementById("description2").textContent = t.desc2;
+    document.getElementById("downloadBtn").textContent  = t.download;
+    document.getElementById("downloadBtn").href         = mod.modrinth;
+    document.getElementById("licenseBtn").textContent   = t.license;
+    document.getElementById("translateBtn").textContent = t.translateLicense;
+
+    // Logo
+    const logo = document.getElementById("logo");
+    logo.src = mod.icon;
+    logo.style.display = "inline-block";
+
+    // Cacher raccourcis/wiki si pas de données
+    document.getElementById("keysBtn").style.display = mod.keys.length ? "inline-block" : "none";
+    document.getElementById("wikiBtn").style.display = mod.wikiPages.length ? "inline-block" : "none";
+}
+
+function changeLang(value) {
+    currentLang = value;
+    applyTranslations();
+}
+
+// ── Changer de mod ────────────────────────────────────────────────────────────
+
+function switchMod(modId) {
+    currentMod = modId;
+
+    // Sidebar active
+    document.querySelectorAll(".mod-item[id^='item-']").forEach(el => el.classList.remove("active"));
+    document.getElementById("item-" + modId).classList.add("active");
+
+    // Réinitialiser le contenu
+    document.getElementById("extra").innerHTML = "";
+
+    // Animation
+    const card = document.getElementById("card");
+    card.style.animation = "none";
+    setTimeout(() => card.style.animation = "fadeIn 0.3s ease", 10);
+
+    applyTranslations();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+applyTranslations();
+
+// ── Fonctions ─────────────────────────────────────────────────────────────────
+
+function showLicense() {
+    document.getElementById("extra").innerHTML =
+        `<h2>📄 License</h2><pre>${LICENSE_TEXT}</pre>`;
+}
+
+function translateLicense() {
+    const lang = getLang();
+    const t = MODS[currentMod].translations[lang] || MODS[currentMod].translations.en;
+    document.getElementById("extra").innerHTML =
+        `<h2>${t.translatedTitle}</h2><pre>${translatedVersions[lang] || translatedVersions.en}</pre>`;
+}
+
+function showKeys() {
+    const mod = MODS[currentMod];
+    if (!mod.keys.length) return;
+    const lang = getLang();
+    const rows = mod.keys.map(k =>
+        `<tr><td><span class="key">${k.key}</span></td><td>${lang === "fr" ? k.action_fr : k.action_en}</td></tr>`
+    ).join("");
+    document.getElementById("extra").innerHTML = `
+        <h2>⌨️ Raccourcis clavier</h2>
+        <table class="key-table">${rows}</table>
+        <p style="margin-top:12px;font-size:13px;">💡 Reconfigurables dans <strong>Options → Touches</strong>.</p>
+    `;
+}
+
+function showWiki() {
+    const mod = MODS[currentMod];
+    if (!mod.wikiPages.length) return;
+    const lang = getLang();
+    const cards = mod.wikiPages.map(p =>
+        `<a class="wiki-card" href="${mod.wiki}/${p.url}" target="_blank">
+            <strong>${p.icon} ${p.title_fr}</strong>
+            <span>${p.desc_fr}</span>
+        </a>`
+    ).join("");
+    document.getElementById("extra").innerHTML = `
+        <h2>📖 Wiki</h2>
+        <div class="wiki-grid">
+            ${cards}
+            <a class="wiki-card" href="${mod.wiki}" target="_blank" style="grid-column:1/-1;text-align:center;">
+                <strong>🌐 Voir tout le wiki →</strong>
+                <span>${mod.wiki.replace("https://","")}</span>
+            </a>
+        </div>
+    `;
+}
+
+function openComments() {
+    const mod = MODS[currentMod];
+    const g = mod.giscus;
+    document.getElementById("extra").innerHTML = `
+        <h2>💬 Commentaires / Bugs</h2>
+        <p>Signale un bug, propose une amélioration ou laisse un commentaire.</p>
+        <div id="comments"></div>`;
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo",        g.repo);
+    script.setAttribute("data-repo-id",     g.repoId);
+    script.setAttribute("data-category",    g.category);
+    script.setAttribute("data-category-id", g.categoryId);
+    script.setAttribute("data-mapping",     "pathname");
+    script.setAttribute("data-strict",      "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata",     "0");
+    script.setAttribute("data-input-position",    "top");
+    script.setAttribute("data-theme",       "preferred_color_scheme");
+    script.setAttribute("data-lang",        "fr");
+    script.setAttribute("data-loading",     "lazy");
+    script.setAttribute("crossorigin",      "anonymous");
+    script.async = true;
+    document.getElementById("comments").appendChild(script);
+}
+
+function resetView() {
+    document.getElementById("extra").innerHTML = "";
+}
+
+</script>
+</body>
+</html>
